@@ -8,4 +8,6 @@ public interface UserService {
 
     User loginUser(User user);
 
+    boolean verifyEmail(String userid, String email, String code);
+
 }

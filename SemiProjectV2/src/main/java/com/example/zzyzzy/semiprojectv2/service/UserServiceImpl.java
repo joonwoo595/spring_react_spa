@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -70,4 +72,20 @@ public class UserServiceImpl implements UserService {
 
         return findUser;
     }
+
+    @Override
+    public boolean verifyEmail(String userid, String email, String code) {
+        Optional<User> user = userRepository
+            .findByUseridAndEmailAndVerifycode(userid, email, code);
+
+        if (user.isPresent()) {
+            user.get().setVerifycode(null); // 인증코드 초기화
+            user.get().setEnabled("true"); // 로그인 가능하도록 설정
+            userRepository.save(user.get());
+            return true;
+        }
+
+        return false;
+    }
+
 }
