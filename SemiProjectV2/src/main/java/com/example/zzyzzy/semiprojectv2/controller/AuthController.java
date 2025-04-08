@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -62,7 +63,7 @@ public class AuthController {
         try {
             // 스프링 시큐리티에서 제공하는 인증처리 매니저로 인증 처리
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUserid(), user.getPasswd())
+                new UsernamePasswordAuthenticationToken(user.getUserid(), user.getPasswd())
             );
 
             // 인증이 완료되면 jwt 토큰 생성
@@ -74,12 +75,15 @@ public class AuthController {
             );
 
             response = ResponseEntity.ok().body(tokens);
+        } catch (UsernameNotFoundException e) {
+            response = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("아이디가 존재하지 않습니다!!");
         } catch (BadCredentialsException e) {
             response = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("아이디나 비밀번호가 일치하지 않습니다!!");
-            log.info(e.getMessage());
         } catch (Exception e) {
-            log.info(e.getMessage());
+            response = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("이메일 인증을 하지 않았습니다!!");
         }
 
         return response;
