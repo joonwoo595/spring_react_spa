@@ -5,6 +5,7 @@ import Nav from "./pages/layout/Nav";
 import Footer from "./pages/layout/Footer";
 import Main from "./pages/Main";
 import Join from "./pages/Join";
+import Join2 from "./pages/Join2";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Myinfo from "./pages/Myinfo";
@@ -27,6 +28,7 @@ function App() {
      <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/member/join" element={<Join />} />
+        <Route path="/member/join2" element={<Join2 />} />
         <Route path="/member/login" element={<Login />} />
         <Route path="/member/logout" element={<Logout />} />
         <Route path="/board/list/:cpg" element={<BoardList />} />
