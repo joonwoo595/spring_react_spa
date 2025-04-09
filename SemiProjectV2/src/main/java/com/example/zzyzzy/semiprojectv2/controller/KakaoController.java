@@ -107,5 +107,30 @@ public class KakaoController {
     }
 
     // 카카오 로그아웃
+    @GetMapping("/logout")
+    public ResponseEntity<String> kakaoLogout() {
+        String logoutUrl = "https://kapi.kakao.com/v1/user/logout";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.set("Authorization", "Bearer " + AccessToken);
+
+        System.out.println("Using token: " + AccessToken);
+        System.out.println("Authorization header: " + headers.get("Authorization"));
+
+        // HTTP 요청 엔티티 생성
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        // GET 요청으로 사용자 정보 받기
+        ResponseEntity<String> response = restTemplate.exchange(
+                logoutUrl, HttpMethod.POST,
+                request, String.class
+        );
+
+        log.info("Logout Response: {}", response.getStatusCode());
+
+        return ResponseEntity.ok("로그아웃 성공!!");
+    }
+
 }
 
