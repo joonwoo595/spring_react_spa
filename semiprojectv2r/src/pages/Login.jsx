@@ -1,5 +1,6 @@
 import {useRef, useState} from "react";
 import "../styles/member.css"
+import KakaoLogin from "../components/KakaoLogin.jsx";
 
 // 폼 재설정 함수
 
@@ -117,6 +118,9 @@ const Login = () => {
                         <i className="fa-solid fa-key"></i> 비밀번호찾기
                     </button>
                 </div>
+
+                <KakaoLogin />
+
             </form>
         </main>
     )
