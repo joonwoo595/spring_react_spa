@@ -24,6 +24,9 @@ public class KakaoController {
     @Value("${kakao.redirect.uri}")
     private String redirectUri;
 
+    @Value("${kakao.redirect.logout.uri}")
+    private String redirectLogoutUri;
+
     private final RestTemplate restTemplate;
     private static String AccessToken = null;
 
@@ -108,7 +111,9 @@ public class KakaoController {
 
     // 카카오 로그아웃
     @GetMapping("/logout")
-    public ResponseEntity<String> kakaoLogout() {
+    //public ResponseEntity<String> kakaoLogout() {
+    public String kakaoLogout() {
+        // 카카오가 발급한 액세스 토큰 무효화 - 재 로그인시 아이디/비번 다시 입력 없음
         String logoutUrl = "https://kapi.kakao.com/v1/user/logout";
 
         HttpHeaders headers = new HttpHeaders();
@@ -129,7 +134,14 @@ public class KakaoController {
 
         log.info("Logout Response: {}", response.getStatusCode());
 
-        return ResponseEntity.ok("로그아웃 성공!!");
+        // return ResponseEntity.ok("로그아웃 성공!!");
+
+        // 완전한 로그아웃 - 재 로그인시 아이디/비번 다시 입력 필요!
+        logoutUrl = "https://kauth.kakao.com/oauth/logout";
+        String params = String.format("?client_id=%s&logout_redirect_uri=%s", clientId, redirectLogoutUri);
+
+        return "redirect:" + logoutUrl + params;
+
     }
 
 }
