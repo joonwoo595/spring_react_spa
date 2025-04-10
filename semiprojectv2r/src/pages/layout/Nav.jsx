@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext.jsx";
 // Nav 함수 컴포넌트 정의
 const Nav = () => {
     const { login } = useContext(AuthContext);
+    const kakao = localStorage.getItem("kakao");
     console.log(">> Nav ", login);
 
     return (
@@ -21,7 +22,9 @@ const Nav = () => {
 
                 <li className="nav-item"><a href="/board/list/1" className="nav-link">게시판</a></li>
                 <li className="nav-item"><a href="/gallery/list/1" className="nav-link">갤러리</a></li>
-                <li className="nav-item"><a href="/member/myinfo" className="nav-link">회원정보</a></li>
+
+                <li className="nav-item"><a href={kakao ? "/member/kakaoMyinfo" : "/member/myinfo"}
+                                            className="nav-link">회원정보</a></li>
             </ul>
         </nav>
     )
